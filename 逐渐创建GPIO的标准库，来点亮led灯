@@ -1,0 +1,59 @@
+#if 0
+ int main()
+ {
+	  //打开时钟
+	 RCC_APB2ENR |= (1<<3);
+	 //输出模式
+	 GPIOB_CRL &=~((0x0f)<<(4*0)); //置对应4个位为0
+	 GPIOB_CRL |= (1<<(4*0));
+	 //输出值
+	 GPIOB_ODR &=~(1<<0); //0
+	 GPIOB_ODR |= (1<<0); //1
+ }
+#endif
+ 
+ #if 0
+int main() 
+{
+	//采用操作BSRR、BRR来编程，点亮LED
+	//打开时钟
+	RCC_APB2ENR |=(1<<3);
+	//置输出模式 
+	GPIOB_CRL &=~((0x0f)<<(4*0));
+	GPIOB_CRL |= (1<<(4*0)); 
+	//采用BSRR置1或0 ,均使用低16位
+	GPIOB_BSRR |= (1<<0); //置1
+	GPIOB_BRR |=(1<<0); //置0 
+	
+}
+ #elif 0
+int main()
+{
+	//采用操作BSRR、BRR来编程，点亮LED
+	//打开时钟
+	RCC->APB2ENR |= (1<<3);
+	//置输出模式 
+	GPIOB->CRL &=~((0x0f)<<(4*0));
+	GPIOB->CRL |= (1<<(4*0)); 
+	//采用BSRR置1或0 ,均使用低16位
+	GPIOB->BSRR |= (1<<0); //置1
+	GPIOB->BRR |=(1<<0); //置0 
+}
+
+#elif 1
+int main()
+{
+	//采用操作BSRR、BRR来编程，点亮LED
+	//打开时钟
+	RCC->APB2ENR |= (1<<3);
+	//置输出模式 
+	GPIOB->CRL &=~((0x0f)<<(4*0));
+	GPIOB->CRL |= (1<<(4*0)); 
+	//采用BSRR置1或0 ,均使用低16位
+	//GPIOB->BSRR |= (1<<0); //置1
+	//GPIOB->BRR |=(1<<0); //置0 
+	GPIO_SetBits(GPIOB,GPIO_Pin_0);//置1 利用函数
+	GPIO_ResetBits(GPIOB,GPIO_Pin_0);//置0
+}
+
+ #endif
