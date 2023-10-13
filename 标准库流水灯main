@@ -1,0 +1,31 @@
+#include "stm32f10x.h"
+#include "bsp_led.h"
+void delay (uint32_t count)
+{
+	for(;count!=0;count--){};
+}
+
+int main()
+{
+	LED_GPIO_ConfigR();
+	LED_GPIO_ConfigG();
+	LED_GPIO_ConfigB(); //在bsp_led.h中
+	while(1)
+	{
+		LED_B(OFF);
+		LED_R(OFF);
+	  LED_G(ON);
+		delay(0xffff);delay(0xffff);delay(0xffff);delay(0xffff);		delay(0xffff);delay(0xffff);delay(0xffff);delay(0xffff);
+		delay(0xffff);delay(0xffff);delay(0xffff);delay(0xffff);		delay(0xffff);delay(0xffff);delay(0xffff);delay(0xffff);
+		LED_G(OFF);
+		LED_R(OFF);
+		LED_B(ON);
+		delay(0xffff);delay(0xffff);delay(0xffff);delay(0xffff);		delay(0xffff);delay(0xffff);delay(0xffff);delay(0xffff);
+		delay(0xffff);delay(0xffff);delay(0xffff);delay(0xffff);		delay(0xffff);delay(0xffff);delay(0xffff);delay(0xffff);
+		LED_B(OFF);
+		LED_G(OFF);
+		LED_R(ON);
+		delay(0xffff);delay(0xffff);delay(0xffff);delay(0xffff);		delay(0xffff);delay(0xffff);delay(0xffff);delay(0xffff);
+		delay(0xffff);delay(0xffff);delay(0xffff);delay(0xffff);		delay(0xffff);delay(0xffff);delay(0xffff);delay(0xffff);
+	}
+}
