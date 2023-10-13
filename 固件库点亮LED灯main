@@ -1,0 +1,22 @@
+#include "stm32f10x.h"
+#include "bsp_led.h"
+
+void delay (uint32_t count)
+{
+	for(;count!=0;count--){};
+}
+
+int main()
+{
+	LED_GPIO_Config();
+	while(1)
+	{
+		
+		//GPIO_SetBits(LED_R_GPIO_PORT,LED_R_GPIO_PIN);
+		LED_R(OFF);
+		delay(0xFFFF);
+		GPIO_ResetBits(LED_R_GPIO_PORT,LED_R_GPIO_PIN);
+		LED_R(ON);
+		delay(0xFFFF)；
+	}
+}
