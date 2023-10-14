@@ -1,0 +1,28 @@
+#include "stm32f10x.h"
+#include "bsp_led.h"
+#include "bsp_key.h"
+
+int main()//不同按键控制不同颜色的灯亮
+{
+		KEY1_GPIO_Config();
+	  KEY2_GPIO_Config();
+  	LED_GPIO_ConfigG();
+	  LED_GPIO_ConfigB();
+		LED_G(OFF);
+	  LED_B(OFF);
+		while(1)
+		{
+				if(Key_scan(KEY1_GPIO_PORT, KEY1_GPIO_PIN)==KEY_ON)
+				{
+					//怎么if判断另一个灯开着？     然后通过toogle给关断
+						LED_B(OFF);
+						LED_G_TOOGLE;
+				}
+			  else if(Key_scan(KEY2_GPIO_PORT, KEY2_GPIO_PIN)==KEY_ON)
+				{
+						LED_G(OFF);
+					  LED_B_TOOGLE;
+				}
+		}
+	
+}
