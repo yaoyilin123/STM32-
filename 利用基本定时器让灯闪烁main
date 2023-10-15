@@ -1,0 +1,21 @@
+#include "stm32f10x.h"
+#include "bsp_led.h"
+#include "bsp_key.h"
+#include "bsp_basictim.h"
+
+uint16_t time = 0;
+
+int main()
+{
+	BASIC_TIM_Init();
+	LED_GPIO_ConfigB();
+	while(1)
+	{
+		if(time ==500)
+		{
+				LED_B_TOOGLE;
+				time =0 ;
+		}
+		
+	}
+}
