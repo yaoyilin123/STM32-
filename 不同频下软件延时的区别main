@@ -1,0 +1,34 @@
+#include "stm32f10x.h"
+#include "bsp_clkconfig.h"
+
+int main()
+{
+	//HSE_SetSysClock(RCC_PLLMul_16);//不设置时或设置9时为72M 16倍是128M 
+	HSI_SetSysClock(RCC_PLLMul_16);//HSI设置时钟 16倍是64M 
+	LED_GPIO_ConfigR();
+	LED_GPIO_ConfigG();
+	LED_GPIO_ConfigB();
+	while(1)
+	{
+		LED_B(OFF);
+		LED_R(OFF);
+	  LED_G(ON);
+		delay(0xffff);delay(0xffff);delay(0xffff);delay(0xffff);		delay(0xffff);delay(0xffff);delay(0xffff);delay(0xffff);
+		delay(0xffff);delay(0xffff);delay(0xffff);delay(0xffff);		delay(0xffff);delay(0xffff);delay(0xffff);delay(0xffff);
+		delay(0xffff);delay(0xffff);delay(0xffff);delay(0xffff);		delay(0xffff);delay(0xffff);delay(0xffff);delay(0xffff);
+		LED_G(OFF);
+		//LED_R(OFF);
+		LED_B(ON);
+		delay(0xffff);delay(0xffff);delay(0xffff);delay(0xffff);		delay(0xffff);delay(0xffff);delay(0xffff);delay(0xffff);
+		delay(0xffff);delay(0xffff);delay(0xffff);delay(0xffff);		delay(0xffff);delay(0xffff);delay(0xffff);delay(0xffff);
+		delay(0xffff);delay(0xffff);delay(0xffff);delay(0xffff);		delay(0xffff);delay(0xffff);delay(0xffff);delay(0xffff);
+		LED_B(OFF);
+		//LED_G(OFF);
+		LED_R(ON);
+		delay(0xffff);delay(0xffff);delay(0xffff);delay(0xffff);		delay(0xffff);delay(0xffff);delay(0xffff);delay(0xffff);
+		delay(0xffff);delay(0xffff);delay(0xffff);delay(0xffff);		delay(0xffff);delay(0xffff);delay(0xffff);delay(0xffff);
+		delay(0xffff);delay(0xffff);delay(0xffff);delay(0xffff);		delay(0xffff);delay(0xffff);delay(0xffff);delay(0xffff);
+	}
+}
+//当使用HSE配置系统时钟（默认72M） 使其超频（max 128M），灯会亮的更快
+//当面对最大64M频率的外设时，可以使用HSI降频，但是没有正合适的频率64M
