@@ -1,0 +1,29 @@
+#include "stm32f10x.h"
+#include "bsp_systick.h"
+#include "bsp_led.h"
+
+//利用systick 产生一秒的时基，LED以一秒闪烁
+int main()
+{
+	//LED灯对应GPIO口初始化
+	LED_GPIO_ConfigR();  
+	LED_GPIO_ConfigB();
+	LED_GPIO_ConfigG();
+	LED_R(OFF);
+	LED_B(OFF);
+	SysTick_Delay_ms(1000);
+	
+	while(1)
+	{
+		LED_G_TOOGLE;
+		LED_R_TOOGLE;
+		SysTick_Delay_ms(1000);
+		LED_R_TOOGLE;
+		LED_B_TOOGLE;
+		SysTick_Delay_ms(1000);
+		LED_B_TOOGLE;
+		LED_G_TOOGLE;
+		SysTick_Delay_ms(1000);
+		
+	}
+}
