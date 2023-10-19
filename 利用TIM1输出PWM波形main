@@ -1,0 +1,8 @@
+#include "bsp_advanceTim.h"
+#include "stm32f10x.h"
+int main()
+{
+	AdvanceTim_Config();
+	while(1);
+
+}
