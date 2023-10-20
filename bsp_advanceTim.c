@@ -14,16 +14,16 @@ static void AdvanceTim_GPIO_Config(void)
 	//互补输出的初始化
 	GPIO_InitTypeDef GPIO_InitStruct1;
 	RCC_APB2PeriphClockCmd( RCC_APB2Periph_GPIOB, ENABLE);
-	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_AF_PP;
-	GPIO_InitStruct.GPIO_Pin = TIM1_CHN_GPIO_PIN;
-	GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_InitStruct1.GPIO_Mode = GPIO_Mode_AF_PP;
+	GPIO_InitStruct1.GPIO_Pin = TIM1_CHN_GPIO_PIN;
+	GPIO_InitStruct1.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_Init(TIM1_CHN_GPIO_PORT, &GPIO_InitStruct1);
 	//死区的初始化
 	GPIO_InitTypeDef GPIO_InitStruct2;
 	RCC_APB2PeriphClockCmd( RCC_APB2Periph_GPIOB, ENABLE);
-	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_AF_PP;
-	GPIO_InitStruct.GPIO_Pin = TIM1_CHBK_GPIO_PIN;
-	GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_InitStruct2.GPIO_Mode = GPIO_Mode_AF_PP;
+	GPIO_InitStruct2.GPIO_Pin = TIM1_CHBK_GPIO_PIN;
+	GPIO_InitStruct2.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_Init(TIM1_CHBK_GPIO_PORT, &GPIO_InitStruct2);
 	//BKIN默认低电平
 	GPIO_ResetBits(GPIOB,GPIO_Pin_12);
