@@ -1,0 +1,22 @@
+#include "stm32f10x.h"
+#include "bsp_GeneralTim.h"
+
+uint16_t i = 0;
+
+int main()
+{
+	GeneralTim_Config();
+	while(1)
+	{
+		for(i=0;i<=100;i++)
+		{
+			TIM_SetCompare3(TIM3,i);
+			SysTick_Delay_ms(10);
+		}
+		for(i=0;i<=100;i++)
+		{
+			TIM_SetCompare3(TIM3,100-i);
+			SysTick_Delay_ms(10);
+		}
+	}
+}
