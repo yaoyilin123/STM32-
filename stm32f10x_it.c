@@ -147,6 +147,25 @@ void EXTI0_IRQHandler(void)
 	}
 	EXTI_ClearITPendingBit(EXTI_Line0);
 }
+
+void EXTI15_10_IRQHandler(void)
+{
+	if(EXTI_GetITStatus(EXTI_Line13)!= RESET)
+	{LED_B_TOOGLE;
+		EXTI_ClearITPendingBit(EXTI_Line13);}
+
+}
+
+uint16_t Rec;
+	void DEBUG_USART_IRQHandler(void)
+{
+	if( USART_GetITStatus(DEBUG_USARTx, USART_IT_RXNE) != RESET)
+	{
+		Rec= USART_ReceiveData(DEBUG_USARTx);
+		//USART_SendData(DEBUG_USARTx,Rec);
+	}
+}
+
 /******************************************************************************/
 /*                 STM32F10x Peripherals Interrupt Handlers                   */
 /*  Add here the Interrupt Handler for the used peripheral(s) (PPP), for the  */
