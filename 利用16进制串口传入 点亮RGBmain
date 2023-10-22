@@ -1,5 +1,7 @@
 //思考如何使用16进制传入 然后点亮RGB小灯 ----->运用中断,令一个全局变量，进入中断时，把接收值赋给全局变量，然后在main中判定
-
+#include "stm32f10x.h"
+#include "bsp_usart.h"
+#include <stdio.h>
 extern uint16_t Rec; //全局变量， 用于在中断中接收信息 然后再main中判定
 int main()
 {
