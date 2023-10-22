@@ -1,0 +1,18 @@
+#include "stm32f10x.h"
+#include "bsp_usart.h"
+#include <stdio.h>
+uint16_t i ;
+int main()
+{
+
+	uint8_t arr[10] = {100,100,100,100,100,100,100,100,100,100};
+	USART_Config();
+	Usart_SendBit(DEBUG_USARTx,100);
+	Usart_SendHalfWord(DEBUG_USARTx, 0xff56);
+	Usart_SendArr(DEBUG_USARTx, arr,10);
+	Usart_SendStr(DEBUG_USARTx,"美丽中国欢迎您！\n");
+	printf("美丽中国欢迎您！\n");
+  printf("这是一个串口接收实验！\n");
+
+while(1);
+}
