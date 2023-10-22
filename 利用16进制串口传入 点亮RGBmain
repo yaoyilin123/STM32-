@@ -1,0 +1,19 @@
+//思考如何使用16进制传入 然后点亮RGB小灯 ----->运用中断,令一个全局变量，进入中断时，把接收值赋给全局变量，然后在main中判定
+
+extern uint16_t Rec; //全局变量， 用于在中断中接收信息 然后再main中判定
+int main()
+{
+	USART_Config();
+	LED_GPIO_Config();
+	while(1)
+	{
+	switch (Rec)
+		{
+			case 01: LED_RED;break;
+			case 02: LED_GREEN;break;
+			case 03: LED_BLUE;break;
+			default : LED_ALLOFF;break;
+		}
+	}
+}
+
