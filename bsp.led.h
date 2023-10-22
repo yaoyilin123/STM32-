@@ -29,8 +29,13 @@
 															   GPIO_ResetBits(LED_B_GPIO_PORT,LED_B_GPIO_PIN);\
 														else GPIO_SetBits(LED_B_GPIO_PORT,LED_B_GPIO_PIN);
 
+#define LED_G_TOOGLE 				{LED_G_GPIO_PORT->ODR  ^= LED_G_GPIO_PIN;}
+#define LED_B_TOOGLE 				{LED_B_GPIO_PORT->ODR  ^= LED_B_GPIO_PIN;}
+#define LED_R_TOOGLE 				{LED_R_GPIO_PORT->ODR  ^= LED_R_GPIO_PIN;}
 
-void LED_GPIO_ConfigR(void);
-void LED_GPIO_ConfigG(void);
-void LED_GPIO_ConfigB(void);
+#define LED_RED 						LED_R(ON);LED_B(OFF);LED_G(OFF)	
+#define LED_BLUE 						LED_R(OFF);LED_B(ON);LED_G(OFF)	
+#define LED_GREEN 					LED_R(OFF);LED_B(OFF);LED_G(ON)	
+#define LED_ALLOFF					LED_R(OFF);LED_B(OFF);LED_G(OFF)	
+void LED_GPIO_Config(void);
 #endif /* bsp_led.h */
