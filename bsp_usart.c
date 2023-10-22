@@ -1,5 +1,5 @@
 #include "bsp_usart.h"
-
+#include <stdio.h>
 static void NVIC_Config()
 {
 	NVIC_InitTypeDef NVIC_InitStructure;
@@ -48,18 +48,95 @@ void USART_Config(void)
 	// 串口中断优先级配置
 	NVIC_Config();
 	//串口中断使能
-	USART_ITConfig(DEBUG_USARTx,USART_IT_RXNE, ENABLE); //RXNE为读取寄存器非空，即传入了数据可以读取，就进入中断
+	//USART_ITConfig(DEBUG_USARTx,USART_IT_RXNE, ENABLE); //RXNE为读取寄存器非空，即传入了数据可以读取，就进入中断
 	//使能串口
 	USART_Cmd(DEBUG_USARTx, ENABLE);
 	
 }
 
-void Usart_SendBit(USART_TypeDef* PUSARTx, uint16_t Data)
+void Usart_SendBit(USART_TypeDef* pUSARTx, uint8_t Data)
 {
 	//传入的串口与数据
-	USART_SendData(PUSARTx,Data);
+	USART_SendData(pUSARTx,Data);
 	//等待发送数据寄存器为空
-	while(USART_GetITStatus(PUSARTx,USART_IT_TXE) == RESET);
+	while (USART_GetFlagStatus(pUSARTx, USART_FLAG_TXE) == RESET); //TXE->发送数据寄存器空 
 }
+
+void Usart_SendHalfWord(USART_TypeDef* pUSARTx, uint16_t Data)
+{
+	uint8_t temp_H,temp_L;
+	temp_H = (Data&0XFF00)>>8;
+	temp_L = (Data&0xFF);
+	//传入的串口与数据
+	USART_SendData(pUSARTx,temp_H);
+	//等待发送数据寄存器为空
+	while (USART_GetFlagStatus(pUSARTx, USART_FLAG_TXE) == RESET);
+		//传入的串口与数据
+	USART_SendData(pUSARTx,temp_L);
+	//等待发送数据寄存器为空
+	while (USART_GetFlagStatus(pUSARTx, USART_FLAG_TXE) == RESET);
+}
+
+
+
+void Usart_SendArr(USART_TypeDef* pUSARTx, uint8_t *arr,uint8_t num)
+{
+	uint8_t i;
+	for(i=0;i<num;i++)
+	{
+			Usart_SendBit(pUSARTx, arr[i]);//循环 每个字节的发送
+	}
+	while (USART_GetFlagStatus(pUSARTx, USART_FLAG_TC) == RESET);  //TC->发送完成
+}
+
+
+
+void Usart_SendStr(USART_TypeDef* pUSARTx,char *str)
+{
+	uint8_t i= 0 ;
+	do
+	{	
+			Usart_SendBit(pUSARTx,*(str+i));
+			i++;
+	}while(*(str+i) !='\0');
+	 while(USART_GetFlagStatus(pUSARTx,USART_FLAG_TC)==RESET); //等待发送完成
+}
+
+
+///重定向c库函数printf到串口，重定向后可使用printf函数
+int fputc(int ch, FILE *f)
+{
+		/* 发送一个字节数据到串口 */
+		USART_SendData(DEBUG_USARTx, (uint8_t) ch);
+		
+		/* 等待发送完毕 */
+		while (USART_GetFlagStatus(DEBUG_USARTx, USART_FLAG_TXE) == RESET);		
+	
+		return (ch);
+}
+
+///重定向c库函数scanf到串口，重写向后可使用scanf、getchar等函数
+int fgetc(FILE *f)
+{
+		/* 等待串口输入数据 */
+		while (USART_GetFlagStatus(DEBUG_USARTx, USART_FLAG_RXNE) == RESET);
+
+		return (int)USART_ReceiveData(DEBUG_USARTx);
+}
+
+void showMessage(void)
+{
+	printf(" 请输入数字（1-3）来点亮RGB灯\n");
+	printf("1   ——   红色\n");
+	printf("2   ——   绿色\n");
+	printf("3   ——   蓝色\n");
+}
+
+
+
+
+
+
+
 
 
