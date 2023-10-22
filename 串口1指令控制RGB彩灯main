@@ -1,0 +1,25 @@
+#include "stm32f10x.h"
+#include "bsp_usart.h"
+#include <stdio.h>
+
+int main()
+{
+	uint8_t temp ;
+	USART_Config();
+	LED_GPIO_Config();
+	showMessage();
+
+	while(1)
+	{
+		temp =getchar();  //不能用receiveData函数！！ 
+		printf("您输入的值是：%c",temp);
+		switch(temp)
+		{
+			case '1':LED_RED;break;
+			case '2':LED_GREEN;break;
+			case '3':LED_BLUE;break;
+			default :LED_ALLOFF;break;
+		}
+	}
+
+}
