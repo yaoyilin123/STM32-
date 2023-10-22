@@ -1,0 +1,23 @@
+#include "stm32f10x.h"
+#include "bsp_usart.h"
+#include <stdio.h>
+
+int main() //利用串口点亮RGB小灯  此时串口传入的是字符
+{
+	uint16_t Rec;
+	USART_Config();
+	LED_GPIO_Config();
+	while(1)
+	{
+		Rec = getchar();  //这个是一个字符一个字符的接收
+		switch (Rec)
+		{
+			case '1': LED_RED;break;
+			case '2': LED_GREEN;break;
+			case '3': LED_BLUE;break;
+			default : LED_ALLOFF;break;
+		}
+		SysTick_Delay_ms(1000); //发送多个数字时能看到灯颜色的变换
+	}
+
+}
