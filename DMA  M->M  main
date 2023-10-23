@@ -1,0 +1,24 @@
+#include "stm32f10x.h"
+#include "bsp_systick.h"
+#include "bsp_m2m_dma.h"
+
+extern uint32_t aSRC_Const_Buffer[BUFFER_SIZE];
+extern uint32_t aDST_Buffer[BUFFER_SIZE];
+int main()
+{
+	LED_GPIO_Config();
+	DMA_MTM_Config();
+	LED_GREEN;
+	SysTick_Delay_ms(1000);
+	while( DMA_GetFlagStatus(DMA1_FLAG_TC3)==RESET); //等待传输完成
+
+	if(Buffercmp(aSRC_Const_Buffer,aDST_Buffer, BUFFER_SIZE) == 1)
+	{
+		LED_BLUE;
+	}
+	else
+	{
+		LED_RED;
+	}
+	while(1);
+}
