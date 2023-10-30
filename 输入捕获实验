@@ -1,0 +1,25 @@
+#include "stm32f10x.h"
+#include "bsp_systick.h"
+#include "bsp_ic.h"
+#include <stdio.h>
+
+int main()
+{
+	OC_Config();
+	IC_Config();
+	Usart1_Config();
+	printf("这是一个输入捕获的实验！\n");
+	while(1)
+	{
+		uint16_t Freq;
+		uint16_t Duty;
+		Freq = IC_Get_Freq();  
+		Duty = IC_Get_Duty();
+		printf("频率为：");
+		Usart_SendHalfWord(USART1,Freq);
+		printf("\n占空比为：");
+		Usart_SendHalfWord(USART1,Duty);
+		printf("\n");
+		SysTick_Delay_ms(1000);
+	}
+}
