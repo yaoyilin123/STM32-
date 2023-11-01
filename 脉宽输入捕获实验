@@ -1,0 +1,29 @@
+#include "stm32f10x.h"
+#include "bsp_usart.h"
+#include "bsp_tim_ic.h"
+
+
+
+int main()
+{	
+	uint32_t CLKF = 72000000 / 72;   //设置时基单元时，PSC为72-1 
+	uint32_t temp;
+	//开启串口
+	USART_Config();
+	//开启输入捕获模式
+	TIM_IC_exam_Config();
+	printf("这是一个按键输入捕获的实验！\n");
+	printf("按下按键1,可以测出按下的时长：\n");
+	while(1)
+	{
+		if(1 == InputCapture_TypeStructure.InputCapture_FinishiFlag)
+		{
+			//temp 为总共读取的数值
+			temp =(InputCapture_TypeStructure.InputCapture_CCRValue+1) + InputCapture_TypeStructure.InputCapture_Period *(0xFFFF);
+			
+			printf("KEY 1 按下的时长为： %d.%d s\n",temp/CLKF,temp%CLKF);
+			//结束标志位置0
+			InputCapture_TypeStructure.InputCapture_FinishiFlag = 0;
+		}
+	}
+}
