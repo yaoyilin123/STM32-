@@ -1,0 +1,37 @@
+#include "stm32f10x.h"
+#include "bsp_usart.h"
+#include "bsp_I2C.h"
+
+
+uint8_t ReadData[10] = {0};
+uint8_t WriteData[8]={1,2,3,4,5,6,7,8};
+int main()
+{
+	uint8_t i;
+	USART_Config();
+	printf("这是一个IIC通讯实验\n");
+	I2C_EE_Config();
+	
+	//1.字写入实验
+	I2C_ByetWrite_Config(11,0x18);
+	detection_GenerateSta();
+	I2C_ByetWrite_Config(12,0x28);
+	detection_GenerateSta();
+	I2C_RandRead_Config(11,ReadData,2);
+	printf("字写入的数据是 0x%x,0x%x \n",ReadData[0],ReadData[1]);
+	
+	//2.页写入实验
+	//页写入的要求：输入的ADDR % 8 == 0，才能正常表现出所输入的数据
+	I2C_PageWrite(0,WriteData,8);
+	detection_GenerateSta();
+	I2C_RandRead_Config(0,ReadData,8);
+	printf("页写入的数据是:");
+	for(i=0;i<8;i++)
+	{
+	printf("%d  ",ReadData[i]);
+	}
+	while(1)
+	{
+	}
+
+}
