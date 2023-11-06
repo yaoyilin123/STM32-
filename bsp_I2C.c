@@ -106,6 +106,74 @@ void I2C_PageWrite(uint8_t addr,uint8_t *data,uint8_t NumByte)
 
 }
 
+//自动对齐写入
+void I2C_EE_BufferWrite(uint8_t WriteAddr,uint8_t *Data,uint8_t NumWrite)
+{
+	uint8_t Addr = 0,NumOfPage = 0,NumOfSingle = 0,count = 0;
+	//本质上还是利用页写入，需要处理数据对齐的问题
+	Addr = WriteAddr % 8;
+	count = 8 - Addr;
+	NumOfPage = NumWrite /8;
+	NumOfSingle = NumWrite % 8;
+	
+	if(0 ==Addr) //恰好对齐
+	{
+		if(0 == NumOfPage) //证明此时传入数据是小于8的
+		{
+			I2C_PageWrite(WriteAddr,Data,NumOfSingle);
+			detection_GenerateSta();
+		}
+		else //数据大于8时
+		{
+			while(NumOfPage)
+			{
+				I2C_PageWrite(WriteAddr,Data,8);
+				detection_GenerateSta();
+				WriteAddr+=8;
+				Data+=8;
+				NumOfPage --;
+			}
+			if(0 != NumOfSingle)
+			{
+			I2C_PageWrite(WriteAddr,Data,NumOfSingle);
+			detection_GenerateSta();
+			}
+		}
+	}
+	else  //不对齐
+	{
+		if(0 == NumOfPage) //证明此时传入数据数量是小于8的
+		{
+			I2C_PageWrite(WriteAddr,Data,NumOfSingle);
+			detection_GenerateSta();
+		}
+		else //大于8时
+		{
+			if( 0 != count)
+			{
+				I2C_PageWrite(WriteAddr,Data,count);
+				detection_GenerateSta();
+				WriteAddr +=count;
+				Data +=count ;
+			}
+			while(NumOfPage)
+			{
+				I2C_PageWrite(WriteAddr,Data,8);
+				detection_GenerateSta();
+				WriteAddr+=8;
+				Data+=8;
+				NumOfPage --;
+			}
+			if(0 != NumOfSingle)
+			{
+				I2C_PageWrite(WriteAddr,Data,NumOfSingle);
+				detection_GenerateSta();
+			}
+		}
+	
+	}
+
+}
 
 
 
