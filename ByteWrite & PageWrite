@@ -30,6 +30,17 @@ int main()
 	{
 	printf("%d  ",ReadData[i]);
 	}
+
+	//3.页写入对齐
+	I2C_EE_BufferWrite(22,WriteData,8);
+	detection_GenerateSta();
+	I2C_RandRead_Config(22,ReadData,8);
+	printf("页写入对齐的数据是:");
+	for(i=0;i<8;i++)
+	{
+	printf("%d  ",ReadData[i]);
+	}
+
 	while(1)
 	{
 	}
