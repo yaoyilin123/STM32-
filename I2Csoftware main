@@ -1,0 +1,11 @@
+#include "bsp_usart.h"
+#include "bsp_I2C_sw.h"
+#include "stm32f10x.h"
+int main()
+{
+	USART_Config();
+	printf("这是一个IIC通讯实验\n");
+	Test_1();
+	while(1);
+
+}
