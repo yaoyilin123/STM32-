@@ -1,0 +1,36 @@
+#include "stm32f10x.h"
+#include "bsp_spi_flash.h"
+#include "bsp_usart.h"
+
+uint8_t writeBuffer[256] ;
+uint8_t readBuffer[256];
+int main()
+{
+	uint8_t i;
+	uint32_t FlashID;
+	for(i=0;i<255;i++)
+	{
+		writeBuffer[i] = i;
+	}
+	
+	USART_Config();
+	SPI_FLASH_Config();
+	printf("这是一个SPI_FLASH通讯实验\n");
+	FlashID = SPI_ReadID();
+	printf("SPI_JEDEC_ID：0x%x\n",FlashID);
+
+	SPI_Sector_Erase(0);
+	SPI_PageProgram_Write(0,writeBuffer,255);
+	SPI_ReadData(0,readBuffer,255);
+	printf("读出的数据：\n");
+	for(i=0;i<254;i++)
+	{
+		printf("%d  ",readBuffer[i]);
+	
+	}
+	
+	while(1)
+	{
+	} 
+
+}
