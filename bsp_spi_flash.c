@@ -106,18 +106,18 @@ static void SPI_WaiteForEnd(void)
 	{
 		FlashFlag = SPI_SendByte(Dummy);
 	}
-	while((FlashFlag & 0x01) == SET);
+	while((FlashFlag & 0x01) == 1);
 	
 	SPI_CS_HIGH;
  
 }
 
 void SPI_Sector_Erase(uint32_t AddToErase)
-{
-	uint32_t temp;
-	SPI_CS_LOW; 
+{	
 	//开启写使能
 	SPI_WriteEnable();
+	uint32_t temp;
+	SPI_CS_LOW; 
 	//发送扇区擦除命令
 	SPI_SendByte(Sector_Erase);
 	//发送需要擦除的地址
@@ -129,18 +129,19 @@ void SPI_Sector_Erase(uint32_t AddToErase)
 	SPI_SendByte(temp);
 	temp = AddToErase & 0xff;
 	SPI_SendByte(temp);
+	SPI_CS_HIGH;              //CS线要在发送结束后就置高
 	//等待其擦除结束
 	SPI_WaiteForEnd();
-	SPI_CS_HIGH;
+
 }
  
 
 void SPI_PageProgram_Write(uint32_t AddrToWrite,uint8_t *Buffer,uint16_t NumToWrite)
-{
+{	
 	uint32_t temp;
-	SPI_CS_LOW; 
 	//开启写使能
 	SPI_WriteEnable();
+	SPI_CS_LOW; 
 	SPI_SendByte(Page_Program);
 	//发送写入的地址     								0xaabbcc
 	temp = (AddrToWrite&0xff0000)>>16 ;    //0x000000aa
@@ -155,12 +156,12 @@ void SPI_PageProgram_Write(uint32_t AddrToWrite,uint8_t *Buffer,uint16_t NumToWr
 		SPI_SendByte(*Buffer);
 		Buffer++;	
 	}
-	
-	SPI_WaiteForEnd();
 	SPI_CS_HIGH;
+	SPI_WaiteForEnd();
+
 }
 
-void SPI_ReadData(uint32_t AddrToRead,uint8_t * ReadBuffer,uint8_t NumToRead)
+void SPI_ReadData(uint32_t AddrToRead,uint8_t * ReadBuffer,uint16_t NumToRead) 
 {
 	uint32_t temp;
 	SPI_CS_LOW;
@@ -180,16 +181,4 @@ void SPI_ReadData(uint32_t AddrToRead,uint8_t * ReadBuffer,uint8_t NumToRead)
 	}
 	SPI_CS_HIGH;
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
