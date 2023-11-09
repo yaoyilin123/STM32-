@@ -37,5 +37,5 @@ uint8_t SPI_SendByte(uint8_t ByteToSend);
 void SPI_FLASH_Config(void);
 void SPI_Sector_Erase(uint32_t AddToErase);
 void SPI_PageProgram_Write(uint32_t AddrToWrite,uint8_t *Buffer,uint16_t NumToWrite);
-void SPI_ReadData(uint32_t AddrToRead,uint8_t * ReadBuffer,uint8_t NumToRead);
+void SPI_ReadData(uint32_t AddrToRead,uint8_t * ReadBuffer,uint16_t NumToRead);
 #endif /* __BSP_SPI_FLASH_H.h */
