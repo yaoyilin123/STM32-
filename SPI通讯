@@ -2,11 +2,11 @@
 #include "bsp_spi_flash.h"
 #include "bsp_usart.h"
 
-uint8_t writeBuffer[256] ;
-uint8_t readBuffer[256];
+uint8_t writeBuffer[255];
+uint8_t readBuffer[4096];
 int main()
 {
-	uint8_t i;
+	uint16_t i;
 	uint32_t FlashID;
 	for(i=0;i<255;i++)
 	{
@@ -21,12 +21,12 @@ int main()
 
 	SPI_Sector_Erase(0);
 	SPI_PageProgram_Write(0,writeBuffer,255);
-	SPI_ReadData(0,readBuffer,255);
-	printf("读出的数据：\n");
-	for(i=0;i<254;i++)
+	SPI_ReadData(0,readBuffer,4096);
+	printf("读出的数据：\n"); 
+	for(i=0;i<4096;i++)
 	{
-		printf("%d  ",readBuffer[i]);
-	
+		printf("0x%x  ",readBuffer[i]);
+		if(0 == i%10) printf("\n");
 	}
 	
 	while(1)
@@ -34,3 +34,4 @@ int main()
 	} 
 
 }
+	
