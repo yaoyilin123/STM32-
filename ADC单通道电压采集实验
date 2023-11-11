@@ -1,0 +1,24 @@
+
+//ADC单通道电压采集实验 （利用中断）
+//中断适用于传输数据量少，速度慢的场合，不然频繁进入中断影响程序运行
+#include "bsp_adc.h"
+#include "stm32f10x.h"
+#include "bsp_usart.h"
+#include <stdio.h>
+extern uint16_t ADC_ConversionValue;
+float ADC_ConvertedValueLocal;
+int main(void)
+{
+	USART_Config();
+	printf("\r\n这是一个ADC利用中断电压采集的实验！\r\n");
+	ADC_Config();
+	while(1)
+	{
+		ADC_ConvertedValueLocal = ADC_ConversionValue * 3.3 / 4096;
+		printf("\r\nThe current AD value: 0x%x \r\n",ADC_ConversionValue);
+		printf("\r\nThe current AD value: %f \r\n",ADC_ConvertedValueLocal);
+		SysTick_Delay_ms(500);
+	
+	
+	}
+}
