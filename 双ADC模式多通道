@@ -1,0 +1,31 @@
+#include "stm32f10x.h"
+#include "bsp_usart.h"
+#include <stdio.h>
+#include "bsp_systick.h"
+#include "bsp_nadc_mult.h"
+extern uint32_t ADCx_MultChannel_DMA_Data[2];
+float ADC_ConvertedValueLocal[4];
+int main()
+{
+	uint16_t temp0= 0,temp1 = 0,temp2=0,temp3 = 0;
+	USART_Config();
+	printf("\r\n这是一个双ADC模式多通道利用DMA传输电压采集的实验！\r\n");
+	ADCx_MultChannel_Init();
+	while(1)
+	{
+		temp0 = (ADCx_MultChannel_DMA_Data[0]&0xffff);				 //ADC1_Channel10的数据
+		temp1 = (ADCx_MultChannel_DMA_Data[0]&0xffff0000)>>16; //ADC2_Channel12的数据
+		temp2 = (ADCx_MultChannel_DMA_Data[1]&0xffff);				 //ADC1_Channel11的数据
+		temp3 = (ADCx_MultChannel_DMA_Data[1]&0xffff0000)>>16; //ADC2_Channel14的数据
+		
+		ADC_ConvertedValueLocal[0] = (float)temp0 *3.3 /4096;
+		ADC_ConvertedValueLocal[1] = (float)temp1 *3.3 /4096;
+		ADC_ConvertedValueLocal[2] = (float)temp2 *3.3 /4096;
+		ADC_ConvertedValueLocal[3] = (float)temp3 *3.3 /4096;
+		printf("\r\nPC0_value: %f \r\n",ADC_ConvertedValueLocal[0]);
+		printf("\r\nPC1_value: %f \r\n",ADC_ConvertedValueLocal[2]);
+		printf("\r\nPC2_value: %f \r\n",ADC_ConvertedValueLocal[1]);
+		printf("\r\nPC4_value: %f \r\n",ADC_ConvertedValueLocal[3]);
+		SysTick_Delay_ms(1000);
+	}
+}
