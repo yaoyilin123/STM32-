@@ -1,0 +1,21 @@
+#include "stm32f10x.h"
+#include "PWM.h"
+#include "EXTI.h"
+
+//设计一个控制步进电机转动的电路
+//要求：占空比时钟为90，通过修改频率来控制电机的转速
+//公式：f = 72M /(PSC+1) * (ARR+1)
+
+//此处电机分频数应与PWM时基单元设计相同值
+uint16_t MotorPsc = (360 - 1);
+
+int main()
+{
+	
+	GeneralTim_Config();
+  Exti_Config();
+	while(1)
+	{
+
+	}
+} 
