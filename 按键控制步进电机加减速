@@ -19,3 +19,30 @@ int main()
 
 	}
 } 
+
+//中断函数
+void EXTI0_IRQHandler(void)
+{
+	//判断中断标志位
+	if(EXTI_GetITStatus(EXTI_Line0)!=RESET)
+	{
+		//减小PSC 以增大转速
+		if( MotorPsc > 72 )
+		{MotorPsc -=72;}
+		TIM_PrescalerConfig(TIM3,MotorPsc,TIM_PSCReloadMode_Update);
+		EXTI_ClearITPendingBit(EXTI_Line0);
+	}
+
+}
+
+void EXTI15_10_IRQHandler(void)
+{
+	//判断中断标志位
+	if(EXTI_GetITStatus(EXTI_Line13)!=RESET)
+	{
+		//增大PSC 以减小转速
+		MotorPsc +=72;
+		TIM_PrescalerConfig(TIM3,MotorPsc,TIM_PSCReloadMode_Update);
+		EXTI_ClearITPendingBit(EXTI_Line13);
+	}
+}
