@@ -1,0 +1,24 @@
+#include "stm32f10x.h"
+#include "PWM.h"
+
+//设计一个控制步进电机转动的电路
+//要求：占空比始终为50％，通过修改频率来控制电机的转速
+//公式：f = 36M /(PSC+1) / (ARR+1)
+	
+//此处电机分频数应与PWM时基单元设计相同值
+uint16_t MotorPsc = (720 - 1);
+int Motor_Step; 
+
+int main()
+{
+	Motor_Step =50000;
+	GeneralTim_Config();
+	Beep_Config(); 
+	MSD_Move(Motor_Step,Accel_Fast,Dccel_Fast,Motor_Speed_Fast);
+	while(1)
+	{
+
+	}
+} 
+
+
