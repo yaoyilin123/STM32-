@@ -21,4 +21,22 @@ int main()
 	}
 } 
 
+//对应中断函数
+void TIM3_IRQHandler(void)
+{
+	static int i =0;
+	if(TIM_GetITStatus(TIM3,TIM_IT_Update)!=RESET)
+	{
+		i++;
+		TIM_ClearITPendingBit(TIM3,TIM_IT_Update);
+	}
+	
+	//判断已经走完了所要求脉冲数
+	if(i > (unsigned int)Motor_Step ) //注意Motor_Step第一位不要是1，不然强制转换后数值不确定
+	{
+		i = 0;
+		//中断标志位失能
+		TIM_ITConfig(TIM3,TIM_IT_Update,DISABLE);
+	}
 
+}
